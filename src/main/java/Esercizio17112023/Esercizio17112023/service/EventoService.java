@@ -2,6 +2,8 @@ package Esercizio17112023.Esercizio17112023.service;
 
 import Esercizio17112023.Esercizio17112023.entities.Evento;
 import Esercizio17112023.Esercizio17112023.entities.User;
+import Esercizio17112023.Esercizio17112023.exceptions.AlreadyBookedEventException;
+import Esercizio17112023.Esercizio17112023.exceptions.BadRequest;
 import Esercizio17112023.Esercizio17112023.exceptions.EventoCompletoException;
 import Esercizio17112023.Esercizio17112023.exceptions.NotFound;
 import Esercizio17112023.Esercizio17112023.payload.EventoModificaPayload;
@@ -72,6 +74,9 @@ public class EventoService {
 
     public Evento prenotaEvento(User u, PrenotaEventoPayload prenotaEventoPayload) throws Exception {
         Evento e=getSingleEvento(prenotaEventoPayload.id());
+        Evento app=eventoRepository.findByIdAndUsersId(e.getId(),u.getId());
+        if(app!=null)   throw new AlreadyBookedEventException("Hai già prenotato questo evento");
+        else
         if(e.getPosti_disponibili()>0&& e.getData_evento().isAfter(LocalDate.now())){
             e.setUsers(u);
             e.setPosti_disponibili(e.getPosti_disponibili()-1);
@@ -95,5 +100,17 @@ public class EventoService {
 
     public List<Evento> findByUserId(User u){
         return eventoRepository.findByUsersId(u.getId()).orElseThrow(()->new NotFound("Nessun elemento trovato"));
+    }
+
+    public Evento deletePrenotazione(User u, int id) {
+        Evento e=getSingleEvento(id);
+        User u1=e.getUsers().stream().filter(elem -> elem.getId() == u.getId()).findFirst().orElseThrow(()->new NotFound("Prenotazione non presente"));
+        if(e.getUsers().remove(u1)) {
+            e.setPosti_disponibili(e.getPosti_disponibili()+1);
+            eventoRepository.save(e);
+        }
+      else throw new BadRequest("La tua prenotazione non è stata rimossa");
+        return e;
+
     }
 }

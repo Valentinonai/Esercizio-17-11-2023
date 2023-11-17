@@ -74,7 +74,11 @@ public class EventoController {
 
     @GetMapping("/me")
     public List<Evento> getAllEventsPerUser(@AuthenticationPrincipal User u){
-//                return new ArrayList<>(u.getEventi());
         return eventoService.findByUserId(u);
+    }
+
+    @DeleteMapping("delete_prenotazione/me/{id}")
+    public Evento deletePrenotazione(@AuthenticationPrincipal User u, @PathVariable int id){
+        return eventoService.deletePrenotazione(u,id);
     }
 }

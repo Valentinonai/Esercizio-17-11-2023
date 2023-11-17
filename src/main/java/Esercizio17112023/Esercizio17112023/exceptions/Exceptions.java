@@ -56,6 +56,12 @@ public class Exceptions {
         return new ErrorPayload(e.getMessage(), new Date());
     }
 
+    @ExceptionHandler(AlreadyBookedEventException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorPayload alreadyBooked(AlreadyBookedEventException e){
+        return new ErrorPayload(e.getMessage(),new Date());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorPayload serverError(Exception e){

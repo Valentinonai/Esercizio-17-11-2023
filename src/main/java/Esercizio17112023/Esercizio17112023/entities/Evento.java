@@ -55,4 +55,5 @@ public class Evento {
     public void setUsers(User user) {
         this.users.add(user);
     }
+
 }
