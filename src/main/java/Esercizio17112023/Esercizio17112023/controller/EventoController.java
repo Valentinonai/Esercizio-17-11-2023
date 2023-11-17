@@ -28,7 +28,7 @@ public class EventoController {
 
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public Page<Evento> getAllUsers(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "5")int size, @RequestParam(defaultValue = "id") String order){
+    public Page<Evento> getAllEventi(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "5")int size, @RequestParam(defaultValue = "id") String order){
         return eventoService.getAllEventi(page,size>20?5:size,order);
     }
 
@@ -61,7 +61,7 @@ public class EventoController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSingleUser(@PathVariable int id){
+    public void deleteSingleEvento(@PathVariable int id){
    eventoService.deleteEvento(id);
     }
 
