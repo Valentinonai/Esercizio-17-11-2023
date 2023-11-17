@@ -8,13 +8,17 @@ import Esercizio17112023.Esercizio17112023.payload.EventoModificaPayload;
 import Esercizio17112023.Esercizio17112023.payload.EventoPayload;
 import Esercizio17112023.Esercizio17112023.payload.PrenotaEventoPayload;
 import Esercizio17112023.Esercizio17112023.repository.EventoRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
@@ -25,6 +29,8 @@ public class EventoService {
     private CloudinaryService cloudinaryService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private Cloudinary cloudinary;
     public Page<Evento> getAllEventi(int page, int size, String order){
         Pageable p= PageRequest.of(page,size, Sort.by(order));
         return eventoRepository.findAll(p);
@@ -74,5 +80,15 @@ public class EventoService {
         else throw new EventoCompletoException("Evento al completo o scaduto");
 
 
+    }
+
+    public Evento upload_img(MultipartFile file, int id) throws IOException {
+        Evento e=getSingleEvento(id);
+        if(!e.getUrl_image().equals("https://picsum.photos/200/300"))
+            cloudinaryService.deleteImageByUrl(e.getUrl_image());
+        String url=(String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        e.setUrl_image(url);
+        eventoRepository.save(e);
+        return e;
     }
 }

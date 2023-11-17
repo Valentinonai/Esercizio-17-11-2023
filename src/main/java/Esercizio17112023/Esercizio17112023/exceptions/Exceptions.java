@@ -26,14 +26,19 @@ public class Exceptions {
 
         return new ErrorPayload(e.getMessage(),new Date());
     }
+    @ExceptionHandler(EventoCompletoException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorPayload EventoCompleto(EventoCompletoException e){
+        return new ErrorPayload(e.getMessage(),new Date());
+    }
     @ExceptionHandler(NotFound.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorPayload notFound(NotFound e) {
         return new ErrorPayload(e.getMessage(),new Date());
     }
-@ExceptionHandler(Unauthorized.class)
-@ResponseStatus(HttpStatus.UNAUTHORIZED)
-public ErrorPayload unauthorized(Unauthorized e){
+    @ExceptionHandler(Unauthorized.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorPayload unauthorized(Unauthorized e){
         return new ErrorPayload(e.getMessage(),new Date());
 }
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
@@ -41,20 +46,14 @@ public ErrorPayload unauthorized(Unauthorized e){
     public ErrorPayload handleUnauthorized(HttpClientErrorException.Unauthorized e){
         return new ErrorPayload(e.getMessage(), new Date());
     }
-@ExceptionHandler(AccessDeniedException.class)
-@ResponseStatus(HttpStatus.UNAUTHORIZED)
-public ErrorPayload accessDenied(AccessDeniedException e){return new ErrorPayload(e.getMessage(), new Date());}
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorPayload accessDenied(AccessDeniedException e){return new ErrorPayload(e.getMessage(), new Date());}
 
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN) // 403
     public ErrorPayload handleAccessDenied(org.springframework.security.access.AccessDeniedException e){
         return new ErrorPayload(e.getMessage(), new Date());
-    }
-
-    @ExceptionHandler(EventoCompletoException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorPayload EventoCompleto(EventoCompletoException e){
-        return new ErrorPayload(e.getMessage(),new Date());
     }
 
     @ExceptionHandler(Exception.class)

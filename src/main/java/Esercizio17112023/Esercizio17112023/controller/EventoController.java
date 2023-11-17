@@ -12,6 +12,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/eventi")
@@ -59,4 +62,9 @@ public class EventoController {
     }
 
 
+    @PostMapping("/upload_img/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Evento upload_img(@PathVariable int id, @RequestParam("immagine_evento")MultipartFile file) throws IOException {
+        return eventoService.upload_img(file,id);
+    }
 }
