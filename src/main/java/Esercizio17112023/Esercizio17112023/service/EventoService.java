@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class EventoService {
@@ -90,5 +91,9 @@ public class EventoService {
         e.setUrl_image(url);
         eventoRepository.save(e);
         return e;
+    }
+
+    public List<Evento> findByUserId(User u){
+        return eventoRepository.findByUsersId(u.getId()).orElseThrow(()->new NotFound("Nessun elemento trovato"));
     }
 }

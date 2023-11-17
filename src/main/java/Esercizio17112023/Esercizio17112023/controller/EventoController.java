@@ -1,6 +1,7 @@
 package Esercizio17112023.Esercizio17112023.controller;
 
 import Esercizio17112023.Esercizio17112023.entities.Evento;
+import Esercizio17112023.Esercizio17112023.entities.User;
 import Esercizio17112023.Esercizio17112023.exceptions.BadRequest;
 import Esercizio17112023.Esercizio17112023.payload.EventoModificaPayload;
 import Esercizio17112023.Esercizio17112023.payload.EventoPayload;
@@ -9,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/eventi")
@@ -66,5 +70,11 @@ public class EventoController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Evento upload_img(@PathVariable int id, @RequestParam("immagine_evento")MultipartFile file) throws IOException {
         return eventoService.upload_img(file,id);
+    }
+
+    @GetMapping("/me")
+    public List<Evento> getAllEventsPerUser(@AuthenticationPrincipal User u){
+//                return new ArrayList<>(u.getEventi());
+        return eventoService.findByUserId(u);
     }
 }
