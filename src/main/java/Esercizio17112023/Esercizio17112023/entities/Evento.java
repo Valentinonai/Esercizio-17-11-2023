@@ -1,11 +1,17 @@
 package Esercizio17112023.Esercizio17112023.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Setter
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "eventi")
 public class Evento {
