@@ -1,10 +1,8 @@
 package Esercizio17112023.Esercizio17112023.service;
 
 import Esercizio17112023.Esercizio17112023.entities.Evento;
-import Esercizio17112023.Esercizio17112023.entities.User;
 import Esercizio17112023.Esercizio17112023.exceptions.NotFound;
 import Esercizio17112023.Esercizio17112023.payload.EventoPayload;
-import Esercizio17112023.Esercizio17112023.payload.UserPayload;
 import Esercizio17112023.Esercizio17112023.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +15,8 @@ import org.springframework.stereotype.Service;
 public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
+    @Autowired
+    private CloudinaryService cloudinaryService;
     public Page<Evento> getAllEventi(int page, int size, String order){
         Pageable p= PageRequest.of(page,size, Sort.by(order));
         return eventoRepository.findAll(p);
@@ -33,17 +33,13 @@ public class EventoService {
     }
 
 
-    public void deleteUser(int id){
+    public void deleteEvento(int id){
         Evento e = getSingleEvento(id);
-        if(!e.getImageUrl().equals("https://picsum.photos/200/300")){
-            cloudinaryService.deleteImageByUrl(u.getImageUrl());
+        if(!e.getUrl_image().equals("https://picsum.photos/200/300")){
+            cloudinaryService.deleteImageByUrl(e.getUrl_image());
         }
         eventoRepository.delete(e);
     }
 
 
-
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(()->new NotFound("User selezionato inesistente"));
-    }
 }
