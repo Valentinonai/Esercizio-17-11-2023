@@ -1,5 +1,6 @@
 package Esercizio17112023.Esercizio17112023.service;
 
+import Esercizio17112023.Esercizio17112023.entities.Ruolo;
 import Esercizio17112023.Esercizio17112023.entities.User;
 import Esercizio17112023.Esercizio17112023.exceptions.NotFound;
 import Esercizio17112023.Esercizio17112023.payload.UserPayload;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     public Page<User> getAllUsers(int page, int size, String order){
         Pageable p= PageRequest.of(page,size, Sort.by(order));
         return userRepository.findAll(p);
@@ -27,7 +31,7 @@ public class UserService {
     }
 
     public User createUser(UserPayload userPayload){
-        User u=User.builder().email(userPayload.email()).nome(userPayload.nome()).password(userPayload.password()).build();
+        User u=User.builder().email(userPayload.email()).nome(userPayload.nome()).password(passwordEncoder.encode(userPayload.password())).role(Ruolo.USER).build();
         userRepository.save(u);
         return u;
     }

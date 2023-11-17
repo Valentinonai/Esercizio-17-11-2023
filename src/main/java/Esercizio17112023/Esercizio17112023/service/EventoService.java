@@ -29,6 +29,7 @@ public class EventoService {
 
     public Evento createEvento(EventoPayload eventoPayload){
         Evento e =Evento.builder().titolo(eventoPayload.titolo()).descrizione(eventoPayload.descrizione()).data_evento(eventoPayload.data()).luogo(eventoPayload.luogo()).posti_disponibili(eventoPayload.posti_disponibili()).url_image("https://picsum.photos/200/300").build();
+        eventoRepository.save(e);
         return e;
     }
 

@@ -14,7 +14,7 @@ public record EventoPayload(
         String descrizione,
         @NotEmpty(message = "il luogo non può essere vuoto")
         String luogo,
-        @NotEmpty(message = "la data non può essere vuoto")
+        @NotNull(message = "la data non può essere vuota")
         LocalDate data,
         @NotNull(message = "il numero posti non può essere vuoto")
         @Min(0)
