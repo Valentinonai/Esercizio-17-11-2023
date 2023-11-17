@@ -57,4 +57,6 @@ public class EventoController {
     public void deleteSingleUser(@PathVariable int id){
    eventoService.deleteEvento(id);
     }
+
+
 }

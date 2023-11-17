@@ -1,6 +1,9 @@
 package Esercizio17112023.Esercizio17112023.controller;
 
+import Esercizio17112023.Esercizio17112023.entities.Evento;
 import Esercizio17112023.Esercizio17112023.entities.User;
+import Esercizio17112023.Esercizio17112023.payload.PrenotaEventoPayload;
+import Esercizio17112023.Esercizio17112023.service.EventoService;
 import Esercizio17112023.Esercizio17112023.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventoService eventoService;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -32,6 +37,13 @@ public class UserController {
     public void deleteSingleUser(@AuthenticationPrincipal User u){
         userService.deleteUser(u);
     }
+
+    @PostMapping("/prenota_evento/me")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Evento prenotaEvento(@AuthenticationPrincipal User u,@RequestBody PrenotaEventoPayload prenotaEventoPayload) throws Exception {
+            return eventoService.prenotaEvento(u,prenotaEventoPayload);
+    }
+
 
 
 }

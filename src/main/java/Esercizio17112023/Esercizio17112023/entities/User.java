@@ -1,5 +1,7 @@
 package Esercizio17112023.Esercizio17112023.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,13 +12,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"password", "enabled", "accountNonExpired", "accountNonLocked", "authorities", "credentialsNonExpired","username"})
 public class User implements UserDetails {
 
     @Id
@@ -29,7 +31,28 @@ public class User implements UserDetails {
     private Ruolo role;
     @ManyToMany
     @JoinTable(name = "user_evento",joinColumns =@JoinColumn(name = "user_id") ,inverseJoinColumns =@JoinColumn(name = "evento_id") )
+    @JsonIgnore
     private Set<Evento> eventi;
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Ruolo role) {
+        this.role = role;
+    }
+
+    public void setEventi(Evento evento) {
+        this.eventi.add(evento);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

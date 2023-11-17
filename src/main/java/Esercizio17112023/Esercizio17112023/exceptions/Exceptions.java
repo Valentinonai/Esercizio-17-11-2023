@@ -50,6 +50,13 @@ public ErrorPayload accessDenied(AccessDeniedException e){return new ErrorPayloa
     public ErrorPayload handleAccessDenied(org.springframework.security.access.AccessDeniedException e){
         return new ErrorPayload(e.getMessage(), new Date());
     }
+
+    @ExceptionHandler(EventoCompletoException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorPayload EventoCompleto(EventoCompletoException e){
+        return new ErrorPayload(e.getMessage(),new Date());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorPayload serverError(Exception e){
