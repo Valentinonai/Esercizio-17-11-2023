@@ -20,9 +20,6 @@ public class SecurityService {
 
     public String autenticazione(LogInPayload body){
         User u=userService.findByEmail(body.email());
-        System.out.println(u);
-        System.err.println(u.getPassword());
-        System.err.println(body.password());
         if(passwordEncoder.matches(body.password(),u.getPassword())){
             return jwtTools.creaToken(u);
         }

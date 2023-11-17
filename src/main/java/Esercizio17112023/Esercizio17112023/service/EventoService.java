@@ -2,6 +2,7 @@ package Esercizio17112023.Esercizio17112023.service;
 
 import Esercizio17112023.Esercizio17112023.entities.Evento;
 import Esercizio17112023.Esercizio17112023.exceptions.NotFound;
+import Esercizio17112023.Esercizio17112023.payload.EventoModificaPayload;
 import Esercizio17112023.Esercizio17112023.payload.EventoPayload;
 import Esercizio17112023.Esercizio17112023.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,15 @@ public class EventoService {
     }
 
 
+    public Evento modificaEvento(EventoModificaPayload body, int id) {
+        Evento e =getSingleEvento(id);
+        e.setTitolo(body.titolo()==null?e.getTitolo():body.titolo());
+        e.setData_evento(body.data()==null?e.getData_evento():body.data());
+        e.setLuogo(body.luogo()==null?e.getLuogo():body.luogo());
+        e.setDescrizione(body.descrizione()==null?e.getDescrizione():body.descrizione());
+        e.setPosti_disponibili(body.posti_disponibili()==0?e.getPosti_disponibili(): body.posti_disponibili());
+        eventoRepository.save(e);
+        return e;
+
+    }
 }
