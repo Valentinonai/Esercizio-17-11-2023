@@ -26,14 +26,14 @@ public class EventoController {
     @Autowired
     private EventoService eventoService;
 
-    @GetMapping()
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+    @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public Page<Evento> getAllUsers(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "5")int size, @RequestParam(defaultValue = "id") String order){
         return eventoService.getAllEventi(page,size>20?5:size,order);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public Evento getSingleEvento(@PathVariable int id){
         return eventoService.getSingleEvento(id);
     }
